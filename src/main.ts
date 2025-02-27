@@ -1,56 +1,67 @@
 import { bangs } from "./bang";
 import "./global.css";
 
-function noSearchDefaultPageRender() {
-  const app = document.querySelector<HTMLDivElement>("#app")!;
-  app.innerHTML = `
-    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh;">
-      <div class="content-container">
-        <h1>Und*ck</h1>
-        <p>DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine to your browser. Enables <a href="https://duckduckgo.com/bang.html" target="_blank">all of DuckDuckGo's bangs.</a></p>
-        <div class="url-container"> 
-          <input 
-            type="text" 
-            class="url-input"
-            value="https://unduck.link?q=%s"
-            readonly 
-          />
-          <button class="copy-button">
-            <img src="/clipboard.svg" alt="Copy" />
-          </button>
-        </div>
-      </div>
-      <footer class="footer">
-        <a href="https://t3.chat" target="_blank">t3.chat</a>
-        •
-        <a href="https://x.com/theo" target="_blank">theo</a>
-        •
-        <a href="https://github.com/t3dotgg/unduck" target="_blank">github</a>
-      </footer>
-    </div>
-  `;
 
-  const copyButton = app.querySelector<HTMLButtonElement>(".copy-button")!;
-  const copyIcon = copyButton.querySelector("img")!;
-  const urlInput = app.querySelector<HTMLInputElement>(".url-input")!;
 
-  copyButton.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(urlInput.value);
-    copyIcon.src = "/clipboard-check.svg";
-
-    setTimeout(() => {
-      copyIcon.src = "/clipboard.svg";
-    }, 2000);
-  });
+const defaultBang = ()=>{
+  const LS_DEFAULT_BANG = localStorage.getItem("default-bang") ?? "g";
+  return bangs.find((b) => b.t === LS_DEFAULT_BANG);
 }
 
-const LS_DEFAULT_BANG = localStorage.getItem("default-bang") ?? "g";
-const defaultBang = bangs.find((b) => b.t === LS_DEFAULT_BANG);
+const validBang = (bang:string)=>{
+  return bangs.some((b) => b.t === bang);
+}
+
+
+function noSearchDefaultPageRender() {
+  const app = document.querySelector<HTMLDivElement>("#app")!;
+
+  const copyButton = app.querySelector<HTMLButtonElement>("#copyButton")!;
+  const copyIcon = copyButton.querySelector<HTMLImageElement>("img");
+  const urlInput = app.querySelector<HTMLInputElement>("#urlInput")!;
+  const defaultBangInput = app.querySelector<HTMLInputElement>("#defaultBang");
+
+  urlInput.value = `${window.location.protocol}//${window.location.host}?q=%s`
+
+  copyButton.addEventListener("click", async () => {
+    console.log("Loggin")
+    await navigator.clipboard.writeText(urlInput.value);
+    if(copyIcon){
+      copyIcon.src = "/clipboard-check.svg";
+      setTimeout(() => {
+        copyIcon.src = "/clipboard.svg";
+      }, 2000);
+    }
+  });
+
+  if(defaultBangInput !== null){
+    defaultBangInput.value = "!" + (localStorage.getItem("default-bang") ?? 'g')
+    defaultBangInput.addEventListener("blur", ()=>{
+      let value = defaultBangInput.value;
+      if(value.startsWith('!')){
+        value = value.slice(1);
+      }
+      if(value === ''){
+        value = 'g'
+      }
+      if(validBang(value)){
+        defaultBangInput.classList.remove("input-error")
+        localStorage.setItem("default-bang", value)
+        defaultBangInput.value = "!" + value
+      }else{
+        defaultBangInput.classList.add("input-error")
+        console.log("Not a valid bang")
+      }
+    })
+  }
+}
+
 
 function getBangredirectUrl() {
   const url = new URL(window.location.href);
   const query = url.searchParams.get("q")?.trim() ?? "";
   if (!query) {
+
     noSearchDefaultPageRender();
     return null;
   }
@@ -58,7 +69,7 @@ function getBangredirectUrl() {
   const match = query.match(/!(\S+)/i);
 
   const bangCandidate = match?.[1]?.toLowerCase();
-  const selectedBang = bangs.find((b) => b.t === bangCandidate) ?? defaultBang;
+  const selectedBang = bangs.find((b) => b.t === bangCandidate) ?? defaultBang();
 
   // Remove the first bang from the query
   const cleanQuery = query.replace(/!\S+\s*/i, "").trim();
@@ -80,5 +91,4 @@ function doRedirect() {
   if (!searchUrl) return;
   window.location.replace(searchUrl);
 }
-
-doRedirect();
+doRedirect()
