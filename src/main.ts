@@ -20,6 +20,16 @@ function noSearchDefaultPageRender() {
   const copyIcon = copyButton.querySelector<HTMLImageElement>("img");
   const urlInput = app.querySelector<HTMLInputElement>("#urlInput")!;
   const defaultBangInput = app.querySelector<HTMLInputElement>("#defaultBang");
+  const searchInput = app.querySelector<HTMLInputElement>("#search")
+
+  if(searchInput){
+    searchInput.value = ""
+    searchInput?.addEventListener("keydown", (e)=>{
+      if(e.key === "Enter"){
+        doBangRedirect(searchInput.value)
+      }
+    })
+  }
 
   urlInput.value = `${window.location.protocol}//${window.location.host}?q=%s`
 
@@ -57,14 +67,9 @@ function noSearchDefaultPageRender() {
 }
 
 
-function getBangredirectUrl() {
-  const url = new URL(window.location.href);
-  const query = url.searchParams.get("q")?.trim() ?? "";
-  if (!query) {
-
-    noSearchDefaultPageRender();
-    return null;
-  }
+function doBangRedirect(query:string) {
+  
+  
 
   const match = query.match(/!(\S+)/i);
 
@@ -82,13 +87,19 @@ function getBangredirectUrl() {
     encodeURIComponent(cleanQuery).replace(/%2F/g, "/")
   );
   if (!searchUrl) return null;
-
-  return searchUrl;
+  window.location.href  = searchUrl;
 }
 
 function doRedirect() {
-  const searchUrl = getBangredirectUrl();
-  if (!searchUrl) return;
-  window.location.replace(searchUrl);
+  const url = new URL(window.location.href);
+  const query = url.searchParams.get("q")?.trim() ?? "";
+  if (!query) {
+
+    noSearchDefaultPageRender();
+    return null;
+  }else{
+    doBangRedirect(query)
+  }
+  
 }
 doRedirect()
