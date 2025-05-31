@@ -2,6 +2,15 @@
 
 export const bangs = [
   {
+    c: "AI",
+    d: "chatgpt.com",
+    r: 0,
+    s: "chatgpt",
+    sc: "Chat GPT",
+    t: "gpt",
+    u: "https://chatgpt.com/?q={{{s}}}&hints=search&ref=unduck"
+  },
+  {
     c: "Tech",
     d: "www.01net.com",
     r: 4,

@@ -1,43 +1,190 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/search.svg" />
-    <link
-      rel="preconnect"
-      href="https://fonts.googleapis.com"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preconnect"
-      href="https://fonts.gstatic.com"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      as="style"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-      media="print"
-      onload="this.media='all'"
-    />
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Unduck</title>
-    <meta
-      name="description"
-      content="A better default search engine (with bangs!)"
-    />
-    <style>
-      
-    </style>
-  </head>
-  <body class="bg-transparent">
-    <div id="app">
+<head>
+  <meta charset="UTF-8" />
+  <script type="module" src="/src/main.ts"></script>
+
+  <link rel="icon" type="image/svg+xml" href="/search.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+  <link rel="preload" as="style"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+    media="print" onload="this.media='all'" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unduck</title>
+  <meta name="description" content="A better default search engine (with bangs!)" />
+  <style>
+    @layer base {
+
+      input:focus {
+        outline: none;
+      }
+    }
+
+    [data-tooltip] {
+      position: relative;
+    }
+
+    [data-tooltip]::before,
+    [data-tooltip]::after {
+      --scale: 0;
+      --arrow-size: 5px;
+      --tooltip-color: #555;
+
+      position: absolute;
+      top: -.25rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(var(--translate-y, 0)) scale(var(--scale));
+      transition: 150ms transform;
+      transform-origin: bottom center;
+    }
+
+    [data-tooltip]::before {
+      --translate-y: calc(-100% - var(--arrow-size));
+      color: #fff;
+      font-size: 12px;
+      content: attr(data-tooltip);
+      padding: .5rem;
+      border-radius: .3rem;
+      text-align: center;
+      width: max-content;
+      max-width: 100%;
+      background: var(--tooltip-color);
+    }
+
+    [data-tooltip]:hover::before,
+    [data-tooltip]:hover::after {
+      --scale: 1;
+    }
+
+    [data-tooltip]::after {
+      --translate-y: calc(-1 * var(--arrow-size));
+
+      content: '';
+      border: var(--arrow-size) solid transparent;
+      border-top-color: var(--tooltip-color);
+      transform-origin: top center;
+    }
+
+    #toast {
+      position: fixed;
+      /* Fixed position relative to the viewport */
+      top: 20px;
+      /* Distance from top */
+      left: 50%;
+      /* Center horizontally */
+      transform: translateX(-50%);
+      z-index: 1000;
+      /* High z-index to ensure it's on top */
+      opacity: 0;
+      /* Initially hidden */
+      visibility: hidden;
+      transition: opacity 0.4s ease-out, transform 0.4s ease-out, visibility 0.4s;
+      cursor: default;
+    }
+
+    #toast.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateX(-50%) translateY(0);
+      /* Animate slide down slightly */
+    }
+  </style>
+</head>
+
+<!-- 
+  input#search
+  input#urlInput
+  input#defaultBang
+  button#copyButton
+  -->
+
+<body>
+  <div id="app" class="w-full h-full" style="opacity:0">
+    <div id="toast" class="bg-emerald-500 rounded-lg text-white px-3 text-sm p-1">Copied</div>
+    <div class="w-full h-full flex justify-center items-center">
+      <div class="flex justify-center flex-col items-center">
+
+        <!-- Description and branding -->
+        <header class="flex justify-center flex-col items-center gap-10">
+          <h1 class="text-2xl font-normal text-gray-900">Over<span class="text-blue-500">Duck</span></h1>
+          <div class="text-sm text-gray-600 max-w-lg mx-auto text-center">
+            DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine in Chrome:
+          </div>
+        </header>
+
+        <!-- Search engine link -->
+        <div id="copyButton"
+          class="flex gap-3 mt-4 hover:border-gray-100 border-1 border-transparent p-2 cursor-pointer hover:bg-gray-100"
+          data-tooltip="Click to Copy">
+          <div id="urlInput" class="flex-1 text-gray-500 rounded-lg px-3 py-1 text-sm font-mono">
+          </div>
+          <img src="/clipboard-check.svg" class=" w-4" />
+        </div>
+
+        <!-- how to set default search engine help -->
+        <!-- <div
+          class="inline-flex items-center gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline cursor-pointer mt-4">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="lucide lucide-circle-help h-3 w-3">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          How to set as default search engine
+        </div> -->
+
+        <!-- search input box -->
+        <div class="relative mt-8 w-full">
+          <div class="mx-3 sm:mx-0 flex  shadow-lg hover:shadow-xl transition-shadow rounded-full">
+
+
+            <input
+              class="flex h-[46px] pt-[11px] pb-2  bg-background px-3 pl-5 ring-offset-background file:border-0 file:bg-transparent text-sm placeholder:text-muted-foreground w-full pr-4 py-3 border-2 border-gray-200 rounded-full rounded-r-none "
+              placeholder="Search…" autocomplete="off" type="text" value="" id="search">
+            <button
+              class="bg-blue-500 rounded-full rounded-l-none w-20 flex justify-center items-center cursor-pointer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                class="lucide lucide-search h-5 w-5 text-white">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- default bang info -->
+        <div class="mt-2">
+          <!-- <span class="text-xs text-gray-500">Default Bang:
+            <code class="bg-gray-100 px-1 rounded text-blue-600">!w</code>
+          </span> -->
+        </div>
+
+        <!-- default bang change button -->
+        <div class="flex justify-center gap-3 mt-6 w-full items-center">
+          <!-- <button class="justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-10 px-6 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded flex items-center gap-2">Add New Bang</button> -->
+<div class="w-60">
+
+  Set Default Bang 
+</div>
+          <input id="defaultBang" class="w-full bg-gray-100 p-2 rounded-xl text-gray-600" />
+          <!-- <button
+            class="cursor-pointer justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-10 px-6 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded flex items-center gap-2">Set
+            Default Bang</button>
+          <button
+            class="cursor-pointer justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-10 px-6 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded flex items-center gap-2">Set
+            Add New bang</button> -->
+        </div>
+
+      </div>
     </div>
-    <script type="module" src="/src/main.ts"></script>
-  </body>
+  </div>
+</body>
+
 </html>
