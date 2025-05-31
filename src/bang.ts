@@ -2,15 +2,6 @@
 
 export const bangs = [
   {
-    c: "Search Engine",
-    d: "duckduckgo.com",
-    r: 0,
-    s: "Duck Duck Go",
-    sc: "AI",
-    t: "ddg",
-    u: "https://duckduckgo.com/?q={{{s}}}",
-  },
-  {
     c: "Tech",
     d: "www.01net.com",
     r: 4,
