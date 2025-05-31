@@ -2,13 +2,13 @@
 
 export const bangs = [
   {
-    c: "AI",
-    d: "www.t3.chat",
+    c: "Search Engine",
+    d: "duckduckgo.com",
     r: 0,
-    s: "T3 Chat",
+    s: "Duck Duck Go",
     sc: "AI",
-    t: "t3",
-    u: "https://www.t3.chat/new?q={{{s}}}",
+    t: "ddg",
+    u: "https://duckduckgo.com/?q={{{s}}}",
   },
   {
     c: "Tech",
