@@ -97,10 +97,7 @@ function doRedirect() {
   if (!query) {
     document.addEventListener('DOMContentLoaded', () => {
       // Your code here
-      document.querySelectorAll<HTMLLinkElement>('link[rel="stylesheet"]').forEach(link => {
-        link.media = 'print';
-        link.onload = () => { link.media = 'all'; };
-      });
+      
       const app = (document.querySelector<HTMLDivElement>("#app") as HTMLDivElement)
 
       noSearchDefaultPageRender(app);
