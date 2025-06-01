@@ -1,7 +1,7 @@
 import { bangs } from "./bang";
 import "./global.css";
 
-
+type Themes = 'light' | 'dark'
 
 const defaultBang = () => {
   const LS_DEFAULT_BANG = localStorage.getItem("default-bang") ?? "g";
@@ -15,36 +15,60 @@ const validBang = (bang: string) => {
 
 function noSearchDefaultPageRender(app: HTMLDivElement) {
   const copyButton = app.querySelector<HTMLButtonElement>("#copyButton")!;
-  const copyIcon = copyButton.querySelector<HTMLImageElement>("img");
   const urlInput = app.querySelector<HTMLInputElement>("#urlInput")!;
   const defaultBangInput = app.querySelector<HTMLInputElement>("#defaultBang");
   const searchInput = app.querySelector<HTMLInputElement>("#search");
   const toast = app.querySelector<HTMLDivElement>("#toast");
+  const themeToggle = app.querySelector<HTMLDivElement>("#themeToggle");
+  const html = document.getElementsByTagName("html")[0]
+  const searchBtn = app.querySelector<HTMLButtonElement>("#searchBtn");
 
-  if (searchInput) {
-    searchInput.value = ""
-    searchInput?.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        doBangRedirect(searchInput.value)
-      }
-    })
+  themeToggle?.addEventListener('click', (event) => {
+    const oldTheme: Themes = html.getAttribute("data-theme") as Themes;
+
+    if (oldTheme === 'dark') {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+  })
+
+
+  searchBtn?.addEventListener('click', () => {
+    doSearch()
+  })
+  const doSearch = () => {
+    if (!searchInput) return;
+    const val = searchInput.value;
+    if (val.trim() === '') return;
+    doBangRedirect(val);
   }
+  searchInput?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      doSearch()
+    }
+  })
+
+  // }
 
   urlInput.innerText = `${window.location.protocol}//${window.location.host}?q=%s`
 
   copyButton.addEventListener("click", async () => {
-    await navigator.clipboard.writeText(urlInput.innerText);
-    if (copyIcon) {
-      if (toast) {
-        toast.innerText = 'Copied';
-        toast.classList.add('show')
-      }
-      setTimeout(() => {
-        if (toast) {
-          toast.classList.remove('show');
-        }
-      }, 2000);
+    try {
+
+      await navigator.clipboard.writeText(urlInput.innerText);
+    } catch (e) {
+
     }
+    if (toast) {
+      toast.innerText = 'Copied';
+      toast.classList.add('show')
+    }
+    setTimeout(() => {
+      if (toast) {
+        toast.classList.remove('show');
+      }
+    }, 2000);
   });
 
   if (defaultBangInput !== null) {
@@ -89,7 +113,18 @@ function doBangRedirect(query: string) {
   window.location.href = searchUrl;
 }
 
+function getSystemTheme(): Themes {
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark';
+  } else {
+    return 'light'; // If not dark, it's typically light or no preference
+  }
+}
 
+function setTheme(theme_name: Themes) {
+  document.querySelector("html")?.setAttribute("data-theme", theme_name);
+  localStorage.setItem('theme', theme_name)
+}
 
 function doRedirect() {
   const url = new URL(window.location.href);
@@ -97,7 +132,8 @@ function doRedirect() {
   if (!query) {
     document.addEventListener('DOMContentLoaded', () => {
       // Your code here
-      
+      let currTheme = (localStorage.getItem('theme') as Themes) || getSystemTheme();
+      setTheme(currTheme);
       const app = (document.querySelector<HTMLDivElement>("#app") as HTMLDivElement)
 
       noSearchDefaultPageRender(app);

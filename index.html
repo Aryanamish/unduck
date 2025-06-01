@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="w-full h-full">
 
 <head>
   <meta charset="UTF-8" />
@@ -32,8 +32,6 @@
     [data-tooltip]::after {
       --scale: 0;
       --arrow-size: 5px;
-      --tooltip-color: #555;
-
       position: absolute;
       top: -.25rem;
       left: 50%;
@@ -44,7 +42,7 @@
 
     [data-tooltip]::before {
       --translate-y: calc(-100% - var(--arrow-size));
-      color: #fff;
+      color: var(--color-background);
       font-size: 12px;
       content: attr(data-tooltip);
       padding: .5rem;
@@ -52,7 +50,7 @@
       text-align: center;
       width: max-content;
       max-width: 100%;
-      background: var(--tooltip-color);
+      background: var(--color-foreground);
     }
 
     [data-tooltip]:hover::before,
@@ -65,7 +63,7 @@
 
       content: '';
       border: var(--arrow-size) solid transparent;
-      border-top-color: var(--tooltip-color);
+      border-top-color: var(--color-foreground);
       transform-origin: top center;
     }
 
@@ -102,27 +100,47 @@
   button#copyButton
   -->
 
-<body>
+<body class="w-full h-full bg-background text-foregroundk">
+
+
+
   <div id="app" class="w-full h-full" style="opacity:0">
-    <div id="toast" class="bg-emerald-500 rounded-lg text-white px-3 text-sm p-1">Copied</div>
+    <div id="toast" class="bg-success rounded-lg text-success-foreground px-3 text-sm p-1">Copied</div>
+    <div class="absolute right-3 top-3" id="themeToggle">
+      <button id="theme-toggle"
+        class="p-2 rounded-full hover:bg-muted focus:outline-none transition-colors duration-300 cursor-pointer">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="text-foreground"><g fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="3.5"/><path stroke-linecap="round" d="M12 5V3m0 18v-2m4.95-11.95l1.414-1.414M5.636 18.364L7.05 16.95M19 12h2M3 12h2m11.95 4.95l1.414 1.414M5.636 5.636L7.05 7.05"/></g></svg>
+
+        <!-- <svg id="moon-icon" class="h-6 w-6 text-foreground " fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+        </svg> -->
+      </button>
+    </div>
+
     <div class="w-full h-full flex justify-center items-center">
       <div class="flex justify-center flex-col items-center">
 
         <!-- Description and branding -->
         <header class="flex justify-center flex-col items-center gap-10">
-          <h1 class="text-2xl font-normal text-gray-900">Over<span class="text-blue-500">Duck</span></h1>
-          <div class="text-sm text-gray-600 max-w-lg mx-auto text-center">
+          <h1 class="text-2xl font-normal text-foreground">Over<span class="text-accent">Duck</span></h1>
+          <div class="text-sm text-foreground max-w-lg mx-auto text-center">
             DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine in Chrome:
           </div>
         </header>
 
         <!-- Search engine link -->
         <div id="copyButton"
-          class="flex gap-3 mt-4 hover:border-gray-100 border-1 border-transparent p-2 cursor-pointer hover:bg-gray-100"
+          class="flex gap-3 mt-4 hover:border-muted border-1 border-transparent p-2 cursor-pointer hover:bg-muted"
           data-tooltip="Click to Copy">
-          <div id="urlInput" class="flex-1 text-gray-500 rounded-lg px-3 py-1 text-sm font-mono">
+          <div id="urlInput" class="flex-1 text-muted-foreground rounded-lg px-3 py-1 text-sm font-mono">
           </div>
-          <img src="/clipboard-check.svg" class=" w-4" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" class="text-foreground w-4">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
         </div>
 
         <!-- how to set default search engine help -->
@@ -144,13 +162,12 @@
 
 
             <input
-              class="flex h-[46px] pt-[11px] pb-2  bg-background px-3 pl-5 ring-offset-background file:border-0 file:bg-transparent text-sm placeholder:text-muted-foreground w-full pr-4 py-3 border-2 border-gray-200 rounded-full rounded-r-none "
+              class="flex h-[46px] pt-[11px] pb-2  bg-muted focus:bg-muted/40 px-3 pl-5 ring-offset-background file:border-0 file:bg-transparent text-sm placeholder:text-muted-foreground w-full pr-4 py-3 border-2 border-muted rounded-full rounded-r-none text-foreground"
               placeholder="Search…" autocomplete="off" type="text" value="" id="search">
-            <button
-              class="bg-blue-500 rounded-full rounded-l-none w-20 flex justify-center items-center cursor-pointer">
+            <button class="bg-primary rounded-full rounded-l-none w-20 flex justify-center items-center cursor-pointer" id="searchBtn">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                class="lucide lucide-search h-5 w-5 text-white">
+                class="lucide lucide-search h-5 w-5 text-background">
                 <circle cx="11" cy="11" r="8"></circle>
                 <path d="m21 21-4.3-4.3"></path>
               </svg>
@@ -169,11 +186,11 @@
         <!-- default bang change button -->
         <div class="flex justify-center gap-3 mt-6 w-full items-center">
           <!-- <button class="justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-10 px-6 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded flex items-center gap-2">Add New Bang</button> -->
-<div class="w-60">
+          <div class="w-60 text-muted-foreground">
 
-  Set Default Bang 
-</div>
-          <input id="defaultBang" class="w-full bg-gray-100 p-2 rounded-xl text-gray-600" />
+            Default Bang
+          </div>
+          <input id="defaultBang" class="w-full bg-background border-2 border-muted p-2 rounded-xl text-muted-foreground focus:text-foreground transition-all " />
           <!-- <button
             class="cursor-pointer justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-10 px-6 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded flex items-center gap-2">Set
             Default Bang</button>

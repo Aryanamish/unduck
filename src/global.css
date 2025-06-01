@@ -18,32 +18,79 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html,
-body {
-  height: 100%;
-  width: 100%;
+[data-theme="dark"] {
+  --color-background: #1a1a1a;
+  /* Very dark gray */
+  --color-foreground: #e0e0e0;
+  /* Light gray */
+
+  --color-muted: #2a2a2a;
+  /* Slightly lighter dark gray */
+  --color-muted-foreground: #a0a0a0;
+  /* Muted light gray */
+
+  --color-popover: #2a2a2a;
+  --color-popover-foreground: #e0e0e0;
+
+  --color-card: #2a2a2a;
+  --color-card-foreground: #e0e0e0;
+
+  --color-border: #4a4a4a;
+  /* Darker border */
+  --color-input: #2a2a2a;
+
+  --color-primary: var(--color-blue-500);
+  /* Keep primary blue, adjust if needed */
+  --color-primary-foreground: var(--color-white);
+
+  --color-secondary: #4a4a4a;
+  /* Darker secondary */
+  --color-secondary-foreground: #e0e0e0;
+
+  --color-accent: var(--color-blue-500);
+  --color-accent-foreground: var(--color-white);
+
+  --color-success: var(--color-emerald-500);
+  --color-success-foreground: var(--color-white);
+
+  --color-destructive: var(--color-red-600);
+  --color-destructive-foreground: var(--color-white);
+
+  --color-ring: var(--color-blue-500);
 }
 
-body {
-  line-height: 1.5;
-  font-weight: 400;
-  font-size: 16px;
-  color: #1a1a1a;
-}
+@theme {
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-weight: 600;
-  line-height: 1.2;
-}
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-black);
 
-a {
-  color: #444444;
-}
-a:hover {
-  color: #888888;
+  --color-muted: var(--color-gray-100);
+  --color-muted-foreground: var(--color-gray-500);
+
+  --color-popover: var(--color-white);
+  --color-popover-foreground: var(--color-gray-900);
+
+  --color-card: var(--color-white);
+  --color-card-foreground: var(--color-gray-900);
+
+  --color-border: var(--color-gray-300);
+  --color-input: var(--color-white);
+
+  --color-primary: var(--color-blue-500);
+  --color-primary-foreground: var(--color-white);
+
+  --color-secondary: var(--color-gray-100);
+  --color-secondary-foreground: var(--color-gray-900);
+
+  --color-accent: var(--color-blue-500);
+  --color-accent-foreground: var(--color-white);
+
+  --color-success: var(--color-emerald-500);
+  --color-success-foreground: var(--color-white);
+
+  --color-destructive: var(--color-red-600);
+  --color-destructive-foreground: var(--color-white);
+
+  --color-ring: var(--color-blue-500);
+
 }
