@@ -130,23 +130,13 @@
         <!-- Description and branding -->
         <header class="flex justify-center flex-col items-center gap-10">
           <h1 class="text-2xl font-normal text-foreground">Over<span class="text-accent">Duck</span></h1>
-          <div class="text-sm text-foreground max-w-lg mx-auto text-center">
+          <div class="text-sm text-foreground max-w-lg mx-auto text-center leading-7">
             <span>OverDuck provides fast, untracked, open-source search. Use "bangs" e.g.,</span>
             <code class="bg-muted px-1 rounded-md">your query !gpt</code>
             <span>
-              for instant redirects and targeted searches on specific websites.
+              for instant redirects. Make it your default search engine for a seamless Browse experience!
             </span>
-            <a class="text-accent" href="https://duckduckgo.com/bangs">
-              <span class="inline-flex gap-1 hover:underline">
-
-                View all avaliable bangs
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="w-3 flex items-end justify-end"
-                viewBox="0 0 24 24">
-                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M13.5 10.5L21 3m-5 0h5v5m0 6v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
-              </svg>
-            </span>
-            </a>
+            
 
           </div>
         </header>
@@ -233,9 +223,15 @@
 
     </div>
     <!-- All Bangs -->
-    <footer class="text-muted-foreground flex flex-col items-center  pb-6 text-sm">
-      <div>
+    <footer class="text-muted-foreground flex flex-col items-center gap-2  pb-6 text-sm">
+      <a class="text-accent" href="https://duckduckgo.com/bangs">
+              <span class="inline-flex gap-1 hover:underline">
 
+                View all avaliable bangs
+                ->
+              </span>
+            </a>
+      <div>
         Fast local bang redirects • No tracking • <a href="https://github.com/Aryanamish/unduck" class="hover:underline">Open Source</a>
       </div>
     </footer>
