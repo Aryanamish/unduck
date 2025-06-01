@@ -23,7 +23,7 @@ function noSearchDefaultPageRender(app: HTMLDivElement) {
   const html = document.getElementsByTagName("html")[0]
   const searchBtn = app.querySelector<HTMLButtonElement>("#searchBtn");
 
-  themeToggle?.addEventListener('click', (event) => {
+  themeToggle?.addEventListener('click', () => {
     const oldTheme: Themes = html.getAttribute("data-theme") as Themes;
 
     if (oldTheme === 'dark') {
