@@ -104,12 +104,18 @@
 
 
 
-  <div id="app" class="w-full h-full" style="opacity:0">
+  <div id="app" class="w-full h-full flex items-center flex-col" style="opacity:0">
     <div id="toast" class="bg-success rounded-lg text-success-foreground px-3 text-sm p-1">Copied</div>
     <div class="absolute right-3 top-3" id="themeToggle">
       <button id="theme-toggle"
         class="p-2 rounded-full hover:bg-muted focus:outline-none transition-colors duration-300 cursor-pointer">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="text-foreground"><g fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="3.5"/><path stroke-linecap="round" d="M12 5V3m0 18v-2m4.95-11.95l1.414-1.414M5.636 18.364L7.05 16.95M19 12h2M3 12h2m11.95 4.95l1.414 1.414M5.636 5.636L7.05 7.05"/></g></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" class="text-foreground">
+          <g fill="none" stroke="currentColor" stroke-width="1">
+            <circle cx="12" cy="12" r="3.5" />
+            <path stroke-linecap="round"
+              d="M12 5V3m0 18v-2m4.95-11.95l1.414-1.414M5.636 18.364L7.05 16.95M19 12h2M3 12h2m11.95 4.95l1.414 1.414M5.636 5.636L7.05 7.05" />
+          </g>
+        </svg>
 
         <!-- <svg id="moon-icon" class="h-6 w-6 text-foreground " fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -118,14 +124,30 @@
       </button>
     </div>
 
-    <div class="w-full h-full flex justify-center items-center">
+    <div class="flex justify-center items-center flex-grow">
       <div class="flex justify-center flex-col items-center">
 
         <!-- Description and branding -->
         <header class="flex justify-center flex-col items-center gap-10">
           <h1 class="text-2xl font-normal text-foreground">Over<span class="text-accent">Duck</span></h1>
           <div class="text-sm text-foreground max-w-lg mx-auto text-center">
-            DuckDuckGo's bang redirects are too slow. Add the following URL as a custom search engine in Chrome:
+            <span>OverDuck provides fast, untracked, open-source search. Use "bangs" e.g.,</span>
+            <code class="bg-muted px-1 rounded-md">your query !gpt</code>
+            <span>
+              for instant redirects and targeted searches on specific websites.
+            </span>
+            <a class="text-accent" href="https://duckduckgo.com/bangs">
+              <span class="inline-flex gap-1 hover:underline">
+
+                View all avaliable bangs
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" class="w-3 flex items-end justify-end"
+                viewBox="0 0 24 24">
+                <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M13.5 10.5L21 3m-5 0h5v5m0 6v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5" />
+              </svg>
+            </span>
+            </a>
+
           </div>
         </header>
 
@@ -156,6 +178,8 @@
           How to set as default search engine
         </div> -->
 
+
+
         <!-- search input box -->
         <div class="relative mt-8 w-full">
           <div class="mx-3 sm:mx-0 flex  shadow-lg hover:shadow-xl transition-shadow rounded-full">
@@ -163,8 +187,10 @@
 
             <input
               class="flex h-[46px] pt-[11px] pb-2  bg-muted focus:bg-muted/40 px-3 pl-5 ring-offset-background file:border-0 file:bg-transparent text-sm placeholder:text-muted-foreground w-full pr-4 py-3 border-2 border-muted rounded-full rounded-r-none text-foreground"
-              placeholder="Search…" autocomplete="off" type="text" value="" id="search">
-            <button class="bg-primary rounded-full rounded-l-none w-20 flex justify-center items-center cursor-pointer" id="searchBtn">
+              placeholder="Search with OverDuck, e.g., your query !gpt" autocomplete="off" type="text" value=""
+              id="search">
+            <button class="bg-primary rounded-full rounded-l-none w-20 flex justify-center items-center cursor-pointer"
+              id="searchBtn">
               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="lucide lucide-search h-5 w-5 text-background">
@@ -175,6 +201,7 @@
           </div>
 
         </div>
+
 
         <!-- default bang info -->
         <div class="mt-2">
@@ -190,7 +217,8 @@
 
             Default Bang
           </div>
-          <input id="defaultBang" class="w-full bg-background border-2 border-muted p-2 rounded-xl text-muted-foreground focus:text-foreground transition-all " />
+          <input id="defaultBang"
+            class="w-full bg-background border-2 border-muted p-2 rounded-xl text-muted-foreground focus:text-foreground transition-all " />
           <!-- <button
             class="cursor-pointer justify-center whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-accent-foreground h-10 px-6 py-2 text-sm bg-gray-50 hover:bg-gray-100 border border-gray-300 rounded flex items-center gap-2">Set
             Default Bang</button>
@@ -199,8 +227,18 @@
             Add New bang</button> -->
         </div>
 
+
+
       </div>
+
     </div>
+    <!-- All Bangs -->
+    <footer class="text-muted-foreground flex flex-col items-center  pb-6 text-sm">
+      <div>
+
+        Fast local bang redirects • No tracking • <a href="https://github.com/Aryanamish/unduck" class="hover:underline">Open Source</a>
+      </div>
+    </footer>
   </div>
 </body>
 
